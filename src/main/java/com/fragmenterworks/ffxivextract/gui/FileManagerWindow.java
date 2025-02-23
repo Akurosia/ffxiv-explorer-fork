@@ -211,7 +211,7 @@ public class FileManagerWindow extends JFrame implements TreeSelectionListener, 
         HavokNative.initHavokNativ();
     }
 
-    private void openFiles(File[] files) {
+    public void openFiles(File[] files) {
         new OpenIndexTask(files).execute();
     }
 
@@ -1061,6 +1061,9 @@ public class FileManagerWindow extends JFrame implements TreeSelectionListener, 
                     String extension = getExtension(contentType, data);
 
                     if (doConvert) {
+                        if (!extension.equals(".png")){
+                            continue;
+                        }
                         if (extension.equals(".exh")) {
                             if (tempView != null && tempView.isSame(file.getName()))
                                 continue;

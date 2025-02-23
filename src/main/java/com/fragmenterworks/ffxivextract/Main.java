@@ -109,7 +109,26 @@ public class Main {
             } else
                 prefs.putBoolean(Constants.PREF_DO_DB_UPDATE, false);
         }
-
+        try {
+            File[] files = new File[14];
+            files[0] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\000000.win32.index");
+            files[1] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\010000.win32.index");
+            files[2] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\020000.win32.index");
+            files[3] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\030000.win32.index");
+            files[4] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\040000.win32.index");
+            files[5] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\050000.win32.index");
+            files[6] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\060000.win32.index");
+            files[7] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\070000.win32.index");
+            files[8] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\080000.win32.index");
+            files[9] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\0a0000.win32.index");
+            files[10] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\0b0000.win32.index");
+            files[11] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\0c0000.win32.index");
+            files[12] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\120000.win32.index");
+            files[13] = new File("C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\ffxiv\\130000.win32.index");
+            fileMan.openFiles(files);
+        } catch (Exception e) {
+            System.out.println("Aku load error");
+        }
         // Version Check (disabled in fork)
 //        if (prefs.getBoolean(Constants.PREF_DO_DB_UPDATE, false)) {
 //            VersionCheckObject checkObj = VersionUpdater.checkForUpdates();
