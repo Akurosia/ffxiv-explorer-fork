@@ -353,7 +353,7 @@ public final class ImageDecoding {
 	}
 
 	public static BufferedImage decodeImageRGBA(final byte[] data, final int offset, final int targetWidth, final int targetHeight, final int compressedWidth, final int compressedHeight, ByteOrder order) throws ImageDecodingException {
-		System.out.printf("width: %d height: %d, twidth: %d theight: %d\n", compressedWidth, compressedHeight, targetWidth, targetHeight);
+		// System.out.printf("width: %d height: %d, twidth: %d theight: %d\n", compressedWidth, compressedHeight, targetWidth, targetHeight);
 
 		final BufferedImage img = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
 		if (data.length < (targetHeight * targetWidth * 4)) {

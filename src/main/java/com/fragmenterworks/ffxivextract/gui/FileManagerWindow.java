@@ -40,7 +40,7 @@ public class FileManagerWindow extends JFrame implements TreeSelectionListener, 
 
     //FILE IO
     private File lastOpenedIndexFile = null;
-    private File lastSaveLocation = null;
+    private File lastSaveLocation = new File("C:\\Users\\kamot\\Desktop");
     // private SqPackIndexFile currentIndexFile;
 
     //UI
@@ -1061,9 +1061,6 @@ public class FileManagerWindow extends JFrame implements TreeSelectionListener, 
                     String extension = getExtension(contentType, data);
 
                     if (doConvert) {
-                        if (!extension.equals(".png")){
-                            continue;
-                        }
                         if (extension.equals(".exh")) {
                             if (tempView != null && tempView.isSame(file.getName()))
                                 continue;
@@ -1214,6 +1211,8 @@ public class FileManagerWindow extends JFrame implements TreeSelectionListener, 
                                 out.write(dataToSave, 0, dataToSave.length);
                                 out.close();
                             }
+                            continue;
+                        } else {
                             continue;
                         }
                     } else {
