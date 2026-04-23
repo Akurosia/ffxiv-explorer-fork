@@ -15,6 +15,10 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -23,6 +27,15 @@ public class Main {
         Utils.getGlobalLogger().info("Starting FFXIV Explorer...");
         boolean akurun = false;
         File[] files = null;
+        if (args.length == 0) {
+            args = new String[] { "-aku" };
+        } else {
+            String[] newArgs = new String[args.length + 2];
+            System.arraycopy(args, 0, newArgs, 0, args.length);
+            newArgs[args.length] = "-aku";
+            newArgs[args.length+1] = "-basepath 'G:\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack'";
+            args = newArgs;
+        }
 
         // Set to windows UI
         try {
@@ -84,72 +97,154 @@ public class Main {
                 return;
             }
 
-            if (args[0].equals("-aku")) {
+// Arguments (order-independent)
+            if (args.length > 0) {
+
+                // parse flags (order-independent)
                 String basepath = "C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\";
-                files = new File[56];
-                files[0] = new File(basepath + "ffxiv\\000000.win32.index");
-                files[1] = new File(basepath + "ffxiv\\010000.win32.index");
-                files[2] = new File(basepath + "ffxiv\\020000.win32.index");
-                files[3] = new File(basepath + "ffxiv\\030000.win32.index");
-                files[4] = new File(basepath + "ffxiv\\040000.win32.index");
-                files[5] = new File(basepath + "ffxiv\\050000.win32.index");
-                files[6] = new File(basepath + "ffxiv\\060000.win32.index");
-                files[7] = new File(basepath + "ffxiv\\070000.win32.index");
-                files[8] = new File(basepath + "ffxiv\\080000.win32.index");
-                files[9] = new File(basepath + "ffxiv\\0a0000.win32.index");
-                files[10] = new File(basepath + "ffxiv\\0b0000.win32.index");
-                files[11] = new File(basepath + "ffxiv\\0c0000.win32.index");
-                files[12] = new File(basepath + "ffxiv\\120000.win32.index");
-                files[13] = new File(basepath + "ffxiv\\130000.win32.index");
-                files[14] = new File(basepath + "ex1\\0c0100.win32.index");
-                files[15] = new File(basepath + "ex1\\020100.win32.index");
-                files[16] = new File(basepath + "ex1\\020101.win32.index");
-                files[17] = new File(basepath + "ex1\\020102.win32.index");
-                files[18] = new File(basepath + "ex1\\020103.win32.index");
-                files[19] = new File(basepath + "ex1\\020104.win32.index");
-                files[20] = new File(basepath + "ex1\\020105.win32.index");
-                files[21] = new File(basepath + "ex1\\030100.win32.index");
-                files[22] = new File(basepath + "ex1\\120100.win32.index");
-                files[23] = new File(basepath + "ex2\\0c0200.win32.index");
-                files[24] = new File(basepath + "ex2\\020200.win32.index");
-                files[25] = new File(basepath + "ex2\\020201.win32.index");
-                files[26] = new File(basepath + "ex2\\020202.win32.index");
-                files[27] = new File(basepath + "ex2\\020203.win32.index");
-                files[28] = new File(basepath + "ex2\\020205.win32.index");
-                files[29] = new File(basepath + "ex2\\030200.win32.index");
-                files[30] = new File(basepath + "ex3\\0c0300.win32.index");
-                files[31] = new File(basepath + "ex3\\020300.win32.index");
-                files[32] = new File(basepath + "ex3\\020301.win32.index");
-                files[33] = new File(basepath + "ex3\\020302.win32.index");
-                files[34] = new File(basepath + "ex3\\020304.win32.index");
-                files[35] = new File(basepath + "ex3\\020305.win32.index");
-                files[36] = new File(basepath + "ex3\\030300.win32.index");
-                files[37] = new File(basepath + "ex4\\0c0400.win32.index");
-                files[38] = new File(basepath + "ex4\\020400.win32.index");
-                files[39] = new File(basepath + "ex4\\020401.win32.index");
-                files[40] = new File(basepath + "ex4\\020402.win32.index");
-                files[41] = new File(basepath + "ex4\\020403.win32.index");
-                files[42] = new File(basepath + "ex4\\020404.win32.index");
-                files[43] = new File(basepath + "ex4\\020405.win32.index");
-                files[44] = new File(basepath + "ex4\\020406.win32.index");
-                files[45] = new File(basepath + "ex4\\020407.win32.index");
-                files[46] = new File(basepath + "ex4\\020408.win32.index");
-                files[47] = new File(basepath + "ex4\\020409.win32.index");
-                files[48] = new File(basepath + "ex4\\030400.win32.index");
-                files[49] = new File(basepath + "ex5\\0c0500.win32.index");
-                files[50] = new File(basepath + "ex5\\020500.win32.index");
-                files[51] = new File(basepath + "ex5\\020501.win32.index");
-                files[52] = new File(basepath + "ex5\\020502.win32.index");
-                files[53] = new File(basepath + "ex5\\020503.win32.index");
-                files[54] = new File(basepath + "ex5\\020505.win32.index");
-                files[55] = new File(basepath + "ex5\\030500.win32.index");
-                akurun = true;
-            }
-            if (args[0].equals("-aku6")) {
-                akurun = true;
-                String basepath = "C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\game\\sqpack\\";
-                files = new File[1];
-                files[0] = new File(basepath + "ffxiv\\060000.win32.index");
+                boolean doHelp = false;
+                boolean doDebug = false;
+                boolean doPathSearch = false;
+                boolean doAku = false;
+                boolean doAku6 = false;
+
+                String pathsearchIndex = null;
+                String pathsearchPrefix = null;
+
+                for (int i = 0; i < args.length; i++) {
+                    String a = args[i];
+
+                    if ("-help".equals(a)) {
+                        doHelp = true;
+                        continue;
+                    }
+
+                    if ("-debug".equals(a)) {
+                        doDebug = true;
+                        continue;
+                    }
+
+                    if ("-basepath".equals(a)) {
+                        if (i + 1 >= args.length) {
+                            Utils.getGlobalLogger().info("Missing value for -basepath");
+                            return;
+                        }
+                        basepath = args[++i];
+                        if (!basepath.endsWith("\\") && !basepath.endsWith("/")) basepath += File.separator;
+                        continue;
+                    }
+
+                    if ("-pathsearch".equals(a)) {
+                        if (i + 2 >= args.length) {
+                            Utils.getGlobalLogger().info("Too few args for pathsearch!");
+                            return;
+                        }
+                        doPathSearch = true;
+                        pathsearchIndex = args[++i];
+                        pathsearchPrefix = args[++i];
+                        continue;
+                    }
+
+                    if ("-aku".equals(a)) {
+                        doAku = true;
+                        continue;
+                    }
+
+                    if ("-aku6".equals(a)) {
+                        doAku6 = true;
+                        continue;
+                    }
+                }
+
+                // help (prints and exits)
+                if (doHelp) {
+                    System.out.println("Commands: -help, -debug, -pathsearch, -aku, -aku6, -basepath");
+                    System.out.println("-pathsearch <path to index> <str>   Searches an archive for strings that start with <str>");
+                    System.out.println("-basepath <path>                   Override sqpack base path (ending with sqpack\\)");
+                    return;
+                }
+
+                // debug / logging
+                if (doDebug) {
+                    Configurator.setAllLevels(LogManager.getRootLogger().getName(), Level.TRACE);
+                }
+
+                // PATHSEARCH
+                if (doPathSearch) {
+                    Utils.getGlobalLogger().info("Starting Path Searcher (this will take a while)");
+                    try {
+                        PathSearcher.doPathSearch(pathsearchIndex, pathsearchPrefix);
+                    } catch (IOException e) {
+                        Utils.getGlobalLogger().error("Encountered an error while path searching.", e);
+                    }
+                    return;
+                }
+
+                // preset file lists
+// preset file lists
+                if (doAku || doAku6) {
+                    akurun = true;
+
+                    if (doAku6) {
+                        files = new File[1];
+                        files[0] = new File(basepath + "ffxiv\\060000.win32.index");
+                    } else {
+                        // recursively collect all .index files inside basepath
+// -aku: recursively collect canonical sqpack indices only (prevents VirtualFolder collisions)
+                        File baseDir = new File(basepath);
+                        if (!baseDir.exists() || !baseDir.isDirectory()) {
+                            Utils.getGlobalLogger().error("Invalid basepath: " + basepath);
+                            return;
+                        }
+
+                        List<Path> foundPaths = new ArrayList<>();
+                        List<Path> ignored = new ArrayList<>();
+
+                        Path base = baseDir.toPath();
+
+                        try {
+                            Files.walk(base)
+                                    .filter(Files::isRegularFile)
+                                    .forEach(p -> {
+                                        Path rel = base.relativize(p);
+
+                                        // only accept "<pack>/<name>.win32.index"
+                                        if (rel.getNameCount() == 2 && rel.getFileName().toString().toLowerCase().endsWith(".win32.index")) {
+                                            foundPaths.add(p);
+                                        } else if (p.toString().toLowerCase().endsWith(".index") || p.toString().toLowerCase().contains(".index")) {
+                                            // optional: collect suspicious ones for debugging
+                                            ignored.add(p);
+                                        }
+                                    });
+                        } catch (IOException e) {
+                            Utils.getGlobalLogger().error("Error scanning for .index files", e);
+                            return;
+                        }
+
+// deterministic order
+                        foundPaths.sort((a, b) -> {
+                            Path ra = base.relativize(a);
+                            Path rb = base.relativize(b);
+                            int da = ra.getNameCount();
+                            int db = rb.getNameCount();
+                            if (da != db) return Integer.compare(da, db);
+                            return ra.toString().compareToIgnoreCase(rb.toString());
+                        });
+
+                        files = new File[foundPaths.size()];
+                        for (int i = 0; i < foundPaths.size(); i++) files[i] = foundPaths.get(i).toFile();
+
+                        Utils.getGlobalLogger().info("Found " + files.length + " .win32.index files under " + basepath);
+
+// optional debug to identify what would've broken the tree
+                        if (!ignored.isEmpty()) {
+                            Utils.getGlobalLogger().warn("Ignored " + ignored.size() + " non-canonical index-like paths (showing up to 30):");
+                            for (int i = 0; i < ignored.size() && i < 30; i++) {
+                                Utils.getGlobalLogger().warn("  " + base.relativize(ignored.get(i)));
+                            }
+                        }
+                    }
+                }
             }
         }
 
